@@ -67,13 +67,15 @@
             direction: "asc"
           }
         ],
-        perPage: 5,
+        perPage: 10,
+        apiKey: process.env.VUE_APP_X_API_KEY,
+        apiUrl: process.env.VUE_APP_API_URL,
       };
     },
     methods: {
       getData (apiUrl, httpOptions) {
-        this.$http.defaults.baseURL = (process.env.VUE_APP_API_URL  || 'http://localhost:8082') + '/v1/state';
-        this.$http.defaults.headers.common['X-Api-Key'] = process.env.VUE_APP_X_API_KEY || 'e0f66c28-f348-4304-9609-3169f0cd07cf';
+        this.$http.defaults.baseURL = this.apiUrl + '/v1/state';
+        this.$http.defaults.headers.common['X-Api-Key'] = this.apiKey;
         return this.$http.get(apiUrl, httpOptions)
       },
       makeQueryParams (sortOrder, currentPage, perPage) {

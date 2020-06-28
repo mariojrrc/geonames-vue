@@ -46,7 +46,7 @@
             sortField: "name"
           },
           {
-            name: "stateId",
+            name: "stateName",
             title: '<i class="grey address book outline icon"></i>Estado',
             width: "20%",
           },
@@ -67,14 +67,16 @@
             direction: "asc"
           }
         ],
-        perPage: 5,
+        perPage: 10,
+        apiKey: process.env.VUE_APP_X_API_KEY,
+        apiUrl: process.env.VUE_APP_API_URL,
       };
     },
     methods: {
       getData (apiUrl, httpOptions) {
-        this.$http.defaults.baseURL = (process.env.VUE_APP_API_URL  || 'http://localhost:8082') + '/v1/city';
-        this.$http.defaults.headers.common['X-Api-Key'] = process.env.VUE_APP_X_API_KEY || 'e0f66c28-f348-4304-9609-3169f0cd07cf';
-        return this.$http.get(apiUrl, httpOptions)
+        this.$http.defaults.baseURL = this.apiUrl + '/v1/city';
+        this.$http.defaults.headers.common['X-Api-Key'] = this.apiKey;
+        return this.$http.get(apiUrl, httpOptions);
       },
       makeQueryParams (sortOrder, currentPage, perPage) {
         return {
@@ -99,11 +101,12 @@
         }
 
         transformed.data = [];
-        for (var i=0; i < data._embedded.cities.length; i++) {
+        for (var i = 0; i < data._embedded.cities.length; i++) {
           transformed.data.push({
             id: data._embedded.cities[i].id,
             name: data._embedded.cities[i].name,
             stateId: data._embedded.cities[i].stateId,
+            stateName: data._embedded.cities[i].stateName || '',
             createdAt: this.$moment(data._embedded.cities[i].createdAt).format('HH:mm:ss DD/MM/YYYY'),
             updatedAt: this.$moment(data._embedded.cities[i].updatedAt).format('HH:mm:ss DD/MM/YYYY'),
           });
@@ -114,10 +117,35 @@
       onPaginationData(paginationData) {
         this.$refs.pagination.setPaginationData(paginationData);
         this.$refs.paginationInfo.setPaginationData(paginationData);
+
+        const tableData = this.$refs.vuetable.$data.tableData;
+        const vuetable = this.$refs.vuetable;
+        const stateIds = tableData.map((item) => item.stateId);
+        if (stateIds.length > 0) {
+          // fetch states by ids
+          this.$http.defaults.baseURL = this.apiUrl;
+          this.$http.defaults.headers.common['X-Api-Key'] = this.apiKey
+
+          // bind to already loaded tableData
+          this.$http.post('/v1/state/bulk', {ids: stateIds}).then(function (res) {
+            const transformed = [];
+            for (let i = 0; i < tableData.length; i++) {
+              transformed.push(Object.assign(
+                tableData[i],
+                { stateName: (res.data[tableData[i].stateId] || {}).name || ''}
+                )
+              );
+            }
+            // reactivity :)
+            vuetable.$data.tableData = transformed;
+          }).catch(function (err) {
+            console.log(err)
+          });
+        }
       },
       onChangePage(page) {
         this.$refs.vuetable.changePage(page);
-      }
+      },
     }
   };
 </script>
