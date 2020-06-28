@@ -3,7 +3,7 @@ GeoNames Vue Example
 
 Este projeto contém o código Vue.JS para consumir a API REST [GeoNames API Mezzio/MongoDB](https://github.com/mariojrrc/geonames-api-mezzio).
 
-Ele já foi compilado usand uma api key de consulta e os arquivos finais se encontram na pasta `/dist`. 
+Ele já foi compilado usando uma api key de consulta e os arquivos finais se encontram na pasta `/dist`. 
 
 ## Executando o projeto
 Opção 1:
