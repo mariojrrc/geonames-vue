@@ -1,17 +1,17 @@
 GeoNames Vue Example
 =================================================
 
-Este projeto contém o código Vue.JS para consumir a API REST [GeoNames API Mezzio/MongoDB](https://github.com/mariojrrc/geonames-api-mezzio).
+This project has a simple Vue.JS code that consumes the REST API [GeoNames API Mezzio/MongoDB](https://github.com/mariojrrc/geonames-api-mezzio).
 
-Ele já foi compilado usando uma api key de consulta e os arquivos finais se encontram na pasta `/dist`.
+It was already compiled using a read-only api key. Its resulting files are placed in `/dist` folder.
 
-## Executando o projeto
-Opção 1:
+## Running the project
+Option 1:
 ```
 php -S 0.0.0.0:8081 -t dist/
 ```
 
-Opção 2:
+Option 2:
 ```
 npm install
 ```
@@ -19,7 +19,7 @@ npm install
 npm run serve
 ```
 
-### Recompilar para produção
+### Rebuild to production
 ```
 npm run build
 ```
@@ -30,7 +30,7 @@ npm run lint
 ```
 
 ## Live Demo
-Você pode ver aplicação rodando [aqui](https://geonames-vue.herokuapp.com).
+You can check the app running on Heroku by clicking [here](https://geonames-vue.herokuapp.com).
 
-## Dúvidas ou sugestões?
-Me mande um [e-mail](mailto:mariojr.rcosta@gmail.com)
+## Questions and Suggestions?
+Drop me an [e-mail](mailto:mariojr.rcosta@gmail.com)
