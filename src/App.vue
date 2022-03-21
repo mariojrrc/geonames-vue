@@ -2,10 +2,7 @@
   <div id="app">
     <h1 class="ui header"> GeoNames Vue</h1>
     <p>
-      Exemplo de exibição dos dados da <a href="https://github.com/mariojrrc/geonames-api-mezzio" target="_blank">GeoNames API Mezzio</a>
-      <span class="ui icon" data-tooltip="Obs: token usado nesse exemplo é e0f66c28-f348-4304-9609-3169f0cd07cf">
-      <i class="info icon"></i>
-    </span>
+      Exemplo de exibição dos dados da <a href="https://github.com/mariojrrc/geonames-api-node" target="_blank">GeoNames API Node</a>
     </p>
     <h3 class="ui header">&lt;GeoNames-State&gt;</h3>
     <state-table></state-table>

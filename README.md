@@ -1,7 +1,7 @@
 GeoNames Vue Example
 =================================================
 
-This project has a simple Vue.JS code that consumes the REST API [GeoNames API Mezzio/MongoDB](https://github.com/mariojrrc/geonames-api-mezzio).
+This project has a simple Vue.JS code that consumes the REST API [GeoNames API Node/MongoDB](https://github.com/mariojrrc/geonames-api-node).
 
 It was already compiled using a read-only api key. Its resulting files are placed in `/dist` folder.
 

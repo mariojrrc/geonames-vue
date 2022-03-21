@@ -10,6 +10,7 @@
                   :transform="transformData"
                   pagination-path="pagination"
                   @vuetable:pagination-data="onPaginationData"
+                  @vuetable:loading="onLoading"
         ></vuetable>
 
         <div class="pagination ui basic segment grid">
@@ -68,14 +69,14 @@
           }
         ],
         perPage: 10,
-        apiKey: process.env.VUE_APP_X_API_KEY,
         apiUrl: process.env.VUE_APP_API_URL,
+        basicAuth: process.env.VUE_APP_BASIC_AUTH,
       };
     },
     methods: {
       getData (apiUrl, httpOptions) {
         this.$http.defaults.baseURL = this.apiUrl + '/v1/state';
-        this.$http.defaults.headers.common['X-Api-Key'] = this.apiKey;
+        this.$http.defaults.headers.common['Authorization'] = this.basicAuth;
         return this.$http.get(apiUrl, httpOptions)
       },
       makeQueryParams (sortOrder, currentPage, perPage) {
@@ -83,7 +84,8 @@
           sort: sortOrder[0].field,
           order: sortOrder[0].direction === 'asc' ? 1 : -1,
           page: currentPage,
-          pageSize: perPage
+          pageSize: perPage,
+          _count: 1,
         }
       },
       transformData (data) {
@@ -94,8 +96,8 @@
           per_page: data._embedded.states.length,
           current_page: data._page,
           last_page: data._page_count,
-          next_page_url: ((data._links).next || {}).href || null,
-          prev_page_url: ((data._links).last || {}).href || null,
+          next_page_url: ((data._links || {}).next || {}).href || null,
+          prev_page_url: ((data._links || {}).last || {}).href || null,
           from: data._page === 1 ? 1 : (data._page - 1) * this.perPage,
           to: data._page === 1 ? data._embedded.states.length : ((data._page - 1) * this.perPage) + data._embedded.states.length
         }
@@ -119,7 +121,10 @@
       },
       onChangePage(page) {
         this.$refs.vuetable.changePage(page);
-      }
+      },
+      onLoading() {
+        console.log('loading... show your spinner here')
+      },
     }
   };
 </script>
