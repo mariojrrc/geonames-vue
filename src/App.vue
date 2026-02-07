@@ -15,10 +15,22 @@
         <span>{{ darkTheme ? 'Light theme' : 'Dark theme' }}</span>
       </button>
     </header>
+    <div class="search-section">
+      <label for="geonames-search" class="search-label">Search city and state</label>
+      <input
+        id="geonames-search"
+        v-model="searchQuery"
+        type="search"
+        class="search-input"
+        placeholder="Type city or state name..."
+        autocomplete="off"
+        aria-label="Search city and state"
+      />
+    </div>
     <h3 class="ui header">&lt;GeoNames-State&gt;</h3>
-    <state-table></state-table>
+    <state-table :key="'state-' + searchQuery" :search-query="searchQuery"></state-table>
     <h3 class="ui header">&lt;GeoNames-City&gt;</h3>
-    <city-table></city-table>
+    <city-table :key="'city-' + searchQuery" :search-query="searchQuery"></city-table>
   </div>
 </template>
 
@@ -36,7 +48,8 @@ export default {
   },
   data() {
     return {
-      darkTheme: false
+      darkTheme: false,
+      searchQuery: ''
     };
   },
   mounted() {
@@ -191,5 +204,48 @@ body.theme-dark {
 
 #app.theme-dark .vuetable-pagination .active a {
   color: var(--app-text) !important;
+}
+
+.search-section {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.search-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.search-input {
+  max-width: 320px;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #2185d0;
+  box-shadow: 0 0 0 2px rgba(33, 133, 208, 0.2);
+}
+
+#app.theme-dark .search-input {
+  background: var(--app-surface);
+  color: var(--app-text);
+  border-color: var(--app-border);
+}
+
+#app.theme-dark .search-input::placeholder {
+  color: var(--app-text-muted);
+}
+
+#app.theme-dark .search-input:focus {
+  border-color: var(--app-link);
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
 }
 </style>
