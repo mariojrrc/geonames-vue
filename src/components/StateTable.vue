@@ -37,6 +37,9 @@
       VuetablePagination,
       VuetablePaginationInfo
     },
+    props: {
+      searchQuery: { type: String, default: "" }
+    },
     data() {
       return {
         fields: [
@@ -80,13 +83,17 @@
         return this.$http.get(apiUrl, httpOptions)
       },
       makeQueryParams (sortOrder, currentPage, perPage) {
-        return {
+        const params = {
           sort: sortOrder[0].field,
           order: sortOrder[0].direction === 'asc' ? 1 : -1,
           page: currentPage,
           pageSize: perPage,
           _count: 1,
+        };
+        if (this.searchQuery && this.searchQuery.trim()) {
+          params.q = this.searchQuery.trim();
         }
+        return params;
       },
       transformData (data) {
         const transformed = {};
