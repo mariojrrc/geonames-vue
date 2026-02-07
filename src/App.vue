@@ -1,9 +1,20 @@
 <template>
-  <div id="app">
-    <h1 class="ui header"> GeoNames Vue</h1>
-    <p>
-      Exemplo de exibição dos dados da <a href="https://github.com/mariojrrc/geonames-api-node" target="_blank">GeoNames API Node</a>
-    </p>
+  <div id="app" :class="{ 'theme-dark': darkTheme }">
+    <header class="app-header">
+      <h1 class="ui header"> GeoNames Vue</h1>
+      <p>
+        Example display of data from the <a href="https://github.com/mariojrrc/geonames-api-node" target="_blank">GeoNames API Node</a>
+      </p>
+      <button
+        type="button"
+        class="theme-toggle"
+        :aria-label="darkTheme ? 'Use light theme' : 'Use dark theme'"
+        @click="toggleTheme"
+      >
+        <i :class="darkTheme ? 'sun icon' : 'moon icon'"></i>
+        <span>{{ darkTheme ? 'Light theme' : 'Dark theme' }}</span>
+      </button>
+    </header>
     <h3 class="ui header">&lt;GeoNames-State&gt;</h3>
     <state-table></state-table>
     <h3 class="ui header">&lt;GeoNames-City&gt;</h3>
@@ -15,13 +26,40 @@
 import StateTable from './components/StateTable.vue';
 import CityTable from './components/CityTable.vue';
 
+const STORAGE_KEY = 'geonames-vue-theme';
+
 export default {
   name: 'App',
   components: {
     StateTable,
     CityTable
+  },
+  data() {
+    return {
+      darkTheme: false
+    };
+  },
+  mounted() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved !== null) {
+      this.darkTheme = saved === 'dark';
+    }
+    this.applyThemeToBody();
+  },
+  updated() {
+    this.applyThemeToBody();
+  },
+  methods: {
+    toggleTheme() {
+      this.darkTheme = !this.darkTheme;
+      localStorage.setItem(STORAGE_KEY, this.darkTheme ? 'dark' : 'light');
+      this.applyThemeToBody();
+    },
+    applyThemeToBody() {
+      document.body.classList.toggle('theme-dark', this.darkTheme);
+    }
   }
-}
+};
 </script>
 
 <style>
@@ -32,8 +70,126 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
 body {
   background-color: aliceblue;
+  transition: background-color 0.2s ease;
+}
+
+.app-header {
+  position: relative;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: #fff;
+  color: #2c3e50;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: #f0f0f0;
+}
+
+/* Dark theme */
+#app.theme-dark {
+  --app-bg: #1a1d21;
+  --app-text: #e4e6e8;
+  --app-text-muted: #9ca3af;
+  --app-link: #60a5fa;
+  --app-link-hover: #93c5fd;
+  --app-surface: #25282d;
+  --app-border: #374151;
+}
+
+#app.theme-dark {
+  color: var(--app-text);
+}
+
+body.theme-dark {
+  background-color: #1a1d21;
+}
+
+#app.theme-dark .app-header a {
+  color: var(--app-link);
+}
+
+#app.theme-dark .app-header a:hover {
+  color: var(--app-link-hover);
+}
+
+#app.theme-dark .theme-toggle {
+  background: var(--app-surface);
+  color: var(--app-text);
+  border-color: var(--app-border);
+}
+
+#app.theme-dark .theme-toggle:hover {
+  background: #2d3139;
+}
+
+#app.theme-dark .ui.header {
+  color: var(--app-text) !important;
+}
+
+#app.theme-dark .ui.basic.segment {
+  background: var(--app-surface) !important;
+  border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+#app.theme-dark .vuetable table {
+  background: var(--app-surface) !important;
+  color: var(--app-text) !important;
+}
+
+#app.theme-dark .vuetable th,
+#app.theme-dark .vuetable td {
+  border-color: var(--app-border) !important;
+}
+
+#app.theme-dark .vuetable th {
+  background: #2d3139 !important;
+  color: var(--app-text-muted) !important;
+}
+
+#app.theme-dark .vuetable tbody tr td {
+  background: #25282d !important;
+  color: #fff !important;
+}
+
+#app.theme-dark .vuetable tr:hover td {
+  background: #2d3139 !important;
+  color: #fff !important;
+}
+
+#app.theme-dark .vuetable-pagination-info,
+#app.theme-dark .vuetable-pagination {
+  color: var(--app-text-muted) !important;
+}
+
+#app.theme-dark .vuetable-pagination a,
+#app.theme-dark .vuetable-pagination button {
+  color: var(--app-link) !important;
+}
+
+#app.theme-dark .vuetable-pagination a:hover,
+#app.theme-dark .vuetable-pagination button:hover {
+  color: var(--app-link-hover) !important;
+}
+
+#app.theme-dark .vuetable-pagination .active a {
+  color: var(--app-text) !important;
 }
 </style>

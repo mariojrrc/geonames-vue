@@ -14,8 +14,8 @@
 
         <div class="pagination ui basic segment grid">
             <vuetable-pagination-info ref="paginationInfo"
-                                      info-template="Exibindo {from} a {to} do total de {total} itens"
-                                      no-data-template="Sem dados para exibir"
+                                      info-template="Showing {from} to {to} of {total} items"
+                                      no-data-template="No data to display"
             ></vuetable-pagination-info>
 
             <vuetable-pagination ref="pagination"
@@ -41,23 +41,23 @@
         fields: [
           {
             name: "name",
-            title: '<i class="grey address card outline icon"></i>Nome',
+            title: '<i class="grey address card outline icon"></i>Name',
             width: "20%",
             sortField: "name"
           },
           {
             name: "stateName",
-            title: '<i class="grey address book outline icon"></i>Estado',
+            title: '<i class="grey address book outline icon"></i>State',
             width: "20%",
           },
           {
             name: "createdAt",
-            title: '<i class="grey clock outline icon"></i>Data de Criação',
+            title: '<i class="grey clock outline icon"></i>Created at',
             width: "20%",
           },
           {
             name: "updatedAt",
-            title: '<i class="grey clock outline icon"></i>Data de Atualização',
+            title: '<i class="grey clock outline icon"></i>Updated at',
             width: "20%",
           },
         ],
