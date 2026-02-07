@@ -50,7 +50,13 @@
       "parser": "@babel/eslint-parser",
       "requireConfigFile": false
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": ["tests/**/*.js", "**/*.spec.js"],
+        "env": { "jest": true }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",
